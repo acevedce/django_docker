@@ -28,7 +28,7 @@ if [ ! -d "./app" ]; then
   mkdir -p ./app
   cat > ./app/requirements.txt <<EOF
 Django>=4.2,<5.0
-psycopg2>=2.9
+psycopg2-binary>=2.9
 EOF
 
   # Crear proyecto Django dentro de app/
