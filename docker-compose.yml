@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: project
+      POSTGRES_USER: django
+      POSTGRES_PASSWORD: django
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  web:
+    build: .
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    environment:
+      DJANGO_SETTINGS_MODULE: project.settings
+      DATABASE_URL: postgres://django:django@db:5432/project
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: project
+      DB_USER: django
+      DB_PASSWORD: django
+    volumes:
+      - ./app:/app
+    restart: unless-stopped
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+
+volumes:
+  db_data:
