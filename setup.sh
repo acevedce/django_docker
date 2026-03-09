@@ -21,9 +21,10 @@ cd "$DEST_DIR"
 sed -i "s|POSTGRES_DB: project|POSTGRES_DB: $PROJECT_NAME|g" docker-compose.yml
 sed -i "s|DB_NAME: project|DB_NAME: $PROJECT_NAME|g" docker-compose.yml
 sed -i "s|postgres://django:django@db:5432/project|postgres://django:django@db:5432/$PROJECT_NAME|g" docker-compose.yml
+sed -i "s|DJANGO_SETTINGS_MODULE: project.settings|DJANGO_SETTINGS_MODULE: $PROJECT_NAME.settings|g" docker-compose.yml
 
 # Crear app Django con el nombre del proyecto si no existe
-if [ ! -d "./app" ]; then
+if [ ! -f "./app/manage.py" ]; then
   echo "🐍 Creando app Django..."
   mkdir -p ./app
   cat > ./app/requirements.txt <<EOF
